@@ -17,6 +17,10 @@ class ProductList {
         ];
     }
 
+   sumGoods() {
+        return this.goods.reduce((first, {price}) => first + price,0);
+    }
+
     render() {
         const block = document.querySelector(this.container);
 
@@ -48,7 +52,44 @@ class ProductItem {
                   </div>`;
     }
 }
+
+class Cart{
+    constructor(container = '.cart') {
+        this.container = container;
+        this.cartList = [];
+
+        this.fetchCart();
+        this.render();
+    }
+
+    fetchCart() {
+        this.cartList = []
+    }
+
+    sumCart() {
+        return this.cartList.reduce((first, {quantity}, {price}) => first + quantity * price,0);
+    }
+
+    render() {
+
+    }
+
+}
+
+class CartItem {
+    constructor(product) {
+        this.title = product.title;
+        this.price = product.price;
+        this.id = product.id;
+        this.quantity = product.quantity;
+    }
+
+    
+}
+
+
 const pl = new ProductList();
+
 // const products = [
 //     {id: 1, title: 'Notebook', price: 20000},
 //     {id: 2, title: 'Mouse', price: 1500},
