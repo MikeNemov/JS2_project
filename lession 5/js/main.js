@@ -1,92 +1,19 @@
-// 'use strict';
-//
-// const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-//
-// // Переделать в ДЗ не использовать fetch а Promise
-// let getRequest = (url, cb) => {
-//     let xhr = new XMLHttpRequest();
-//     xhr.open('GET', url, true);
-//     xhr.onreadystatechange = () => {
-//         if (xhr.readyState === 4) {
-//             if (xhr.status !== 200) {
-//                 console.log('Error');
-//             } else {
-//                 cb(xhr.responseText);
-//             }
-//         }
-//     };
-//     xhr.send();
-// };
-//
-// // –--------------------------------
-//
-//
-//
-// class ProductList {
-//     constructor(container = '.products') {
-//         this.container = container;
-//         this._goods = [];
-//         this._allProducts = [];
-//         this._getProducts()
-//             .then((data) => {
-//                 this._goods = data;
-//                 this._render();
-//             });
-//     }
-//
-//
-//     _getProducts() {
-//         return fetch(`${API}/catalogData.json`)
-//             .then((response) => response.json())
-//             .catch((error) => {
-//                 console.log(error);
-//             });
-//     }
-//
-//     _render() {
-//         const block = document.querySelector(this.container);
-//
-//         for (const good of this._goods) {
-//             const productObject = new ProductItem(good);
-//             // console.log(productObject);
-//             this._allProducts.push(productObject);
-//             block.insertAdjacentHTML('afterbegin', productObject.render());
-//         }
-//     }
-// }
-//
-// class ProductItem {
-//     constructor(product, img = 'https://via.placeholder.com/200x150') {
-//         this.product_name = product.product_name;
-//         this.price = product.price;
-//         this.id_product = product.id_product;
-//         this.img = img;
-//     }
-//
-//     render() {
-//         return `<div class="product-item" data-id="${this.id_product}">
-//                       <img src="${this.img}" alt="Some img">
-//                       <div class="desc">
-//                           <h3>${this.product_name}</h3>
-//                           <p>${this.price} \u20bd</p>
-//                           <button class="buy-btn">Купить</button>
-//                       </div>
-//                   </div>`;
-//     }
-// }
-//
-//
-// const pl = new ProductList();
-
-
 const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
 const app = new Vue({
     el: '#app',
     data: {
+        isVisibleCart: false,
         catalogUrl: '/catalogData.json',
+        cartUrl: '/getBasket.json',
+        addToCart: '/addToBasket.json',
+        removeFromCart: '/deleteFromBasket.json',
         products: [],
-        imgCatalog: 'https://via.placeholder.com/200x150'
+        filtered: [],
+        cartProducts: [],
+        imgCatalog: 'https://via.placeholder.com/200x150',
+        imgCart: 'https://via.placeholder.com/85x50',
+        searchLine: '',
     },
     methods: {
         getJson(url){
@@ -96,16 +23,58 @@ const app = new Vue({
                     console.log(error);
                 })
         },
-        addProduct(product){
-            console.log(product.id_product);
-        }
+        addProduct(product) {
+            this.getJson(`${API + this.addToCart}`)
+                .then(data => {
+                    if (data.result === 1) {
+                        let find = this.cartProducts.find(el => el.id_product === product.id_product);
+                        if (find) {
+                            find.quantity++;
+                        } else {
+                            let item = Object.assign({quantity: 1}, product);
+                            this.cartProducts.push(item)
+                        }
+                    } else {
+                        alert('Error');
+                    }
+                })
+        },
+        remove(item) {
+            this.getJson(`${API + this.removeFromCart}`)
+                .then(data => {
+                    if (data.result === 1) {
+                        if (item.quantity > 1) {
+                            item.quantity--;
+                        } else {
+                            this.cartProducts.splice(this.cartProducts.indexOf(item), 1)
+                        }
+                    }
+                })
+        },
+
+        filterGoods(){
+            let regexp = new RegExp(this.searchLine, 'i');
+            this.filtered = this.products.filter(el => regexp.test(el.product_name));
+        },
+
     },
+
+
+
     beforeCreate() {},
     created() {
+        this.getJson(`${API + this.cartUrl}`)
+            .then(data => {
+                for (let el of data.contents) {
+                    this.cartProducts.push(el);
+                }
+            });
+
         this.getJson(`${API + this.catalogUrl}`)
             .then(data => {
                 for(let el of data){
                     this.products.push(el);
+                    this.filtered.push(el);
                 }
             });
     },
@@ -115,4 +84,5 @@ const app = new Vue({
     updated() {},
     beforeDestroy() {},
     destroyed() {},
+
 });

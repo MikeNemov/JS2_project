@@ -10,23 +10,38 @@
 <body>
 <div id="app">
     <header class="header">
-<!--        <button class="btn-cart" type="button">Корзина</button>-->
         <div class="logo">Интернет-магазин</div>
         <div class="cart">
-            <form action="#" class="search-form">
-                <label for="search-field">Поиск</label>
-                <input type="text" id="search-field" class="search-field">
+            <form action="#" class="search-form" @submit.prevent="filterGoods">
+                <input type="text" id="search-field" class="search-field" v-model="searchLine">
                 <button class="btn-search" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
-
+            <button class="btn-cart" type="button" @click="isVisibleCart = !isVisibleCart">Корзина</button>
+            <div class="cart-block" v-show="isVisibleCart">
+                <p v-if="!cartProducts.length">Ой, корзина пуста</p>
+                <div class="cart-item" v-for="item of cartProducts" :key="item.id_product">
+                    <div class="product-bio">
+                        <img :src="imgCart" alt="Some image">
+                        <div class="product-desc">
+                            <p class="product-title">{{item.product_name}}</p>
+                            <p class="product-quantity">Количество: {{item.quantity}}</p>
+                            <p class="product-single-price">{{item.price}}₽ за единицу</p>
+                        </div>
+                    </div>
+                    <div class="right-block">
+                        <p class="product-price">{{item.quantity*item.price}}₽</p>
+                        <button class="del-btn" @click="remove(item)">&times;</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button class="btn-cart" type="button">Корзина</button>
+
     </header>
     <main>
         <div class="products">
-            <div class="product-item" v-for="product of products" :key="product.id_product">
+            <div class="product-item" v-for="product of filtered" :key="product.id_product">
                 <img :src="imgCatalog" alt="Some img">
                 <div class="desc">
                     <h3>{{product.product_name}}</h3>
@@ -37,6 +52,7 @@
         </div>
     </main>
 </div>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="js/main.js"></script>
 </body>
