@@ -1,0 +1,156 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    transition-property: all;
+    transition-duration: 300ms;
+
+}
+.header{
+    background-color: #ccc;
+    height: 50px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.cart{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-cart{
+    display: flex;
+    padding: 12px 32px;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border: 0;
+    border-radius: 32px;
+    float: right;
+    cursor: pointer;
+}
+.btn-cart:hover{
+    background-color: #fff65f;
+    color: black;
+}
+
+.buy-btn{
+    display: flex;
+    padding: 12px 32px;
+    margin-top: 12px;
+    font-size: 12px;
+    background-color: white;
+    border: 1px solid;
+    outline: none;
+    cursor: pointer;
+
+}
+.buy-btn:hover{
+    box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+
+}
+
+.products{
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+}
+
+.product-item{
+    box-sizing: border-box;
+    border: 1px solid;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+h3{
+    margin-top: 12px;
+}
+
+.search-form{
+    margin-right: 24px;
+}
+
+
+.search-field {
+    border: none;
+    font-size: 16px;
+    color: #888;
+    padding: 12px;
+    outline: 0;
+}
+
+.search-field:focus {
+    box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+    color: black;
+}
+
+.btn-search {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 1.4em;
+    cursor: pointer;
+    transition-duration: 50ms;
+}
+
+.btn-search:hover {
+    color: yellow;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+}
+.cart-item:not(:last-child){
+    margin-bottom: 20px;
+}
+
+.product-bio{
+    display: flex;
+}
+.cart-item img{
+    align-self: flex-start;
+    margin-right: 15px;
+}
+.product-single-price{
+    color: #474747;
+    font-size: 0.75em;
+}
+.product-price{
+    margin-left: 30px;
+}
+.product-desc{
+    max-width: 150px;
+}
+.product-quantity {
+    margin-top: 15px;
+    font-size: 0.75em;
+}
+.right-block{
+    text-align: right;
+}
+
+.cart-block{
+    box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    right: 12px;
+    top: 64px;
+    position: absolute;
+    background-color: white;
+    padding: 20px;
+    color: black;
+}
+
+
+
+
