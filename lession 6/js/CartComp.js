@@ -38,6 +38,7 @@ Vue.component('cart', {
                     }
                 })
         },
+    },
         mounted(){
         this.$parent.getJson(`${API + this.cartUrl}`)
             .then(data => {
