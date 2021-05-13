@@ -80,6 +80,9 @@ app.put('/api/cart/:id', (req, res) => {
   });
 });
 
+//Удаление из корзины
+
+
 /**
  * Запуск сервера
  * @type {string|number}
