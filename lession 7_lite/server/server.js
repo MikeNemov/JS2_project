@@ -81,6 +81,31 @@ app.put('/api/cart/:id', (req, res) => {
 });
 
 //Удаление из корзины
+app.delete('/api/cart',(req, res) => {
+  fs.readFile('./server/db/userCart.json','utf-8',((err, data) => {
+    if (err) {
+      res.sendStatus(404, JSON.stringify({result:0, text: err}));
+    } else {
+      const cart = JSON.parse(data);
+      const find = cart.contents.find(el => el.id_product === req.body.id_product);
+      console.log(find)
+      if (find&&find.quantity>1) {
+        --find.quantity
+      } else {
+        cart.contents.splice(cart.contents.indexOf(req.body), 1)
+      }
+    fs.writeFile('./server/db/userCart.json', JSON.stringify(cart), (err) => {
+      if (err) {
+        res.send('{"result": 0}')
+      } else {
+        res.send('{"result": 1}')
+      }
+    })
+
+    }
+  }))
+})
+
 
 
 /**
