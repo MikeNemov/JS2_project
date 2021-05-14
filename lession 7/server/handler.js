@@ -4,6 +4,7 @@ const cart = require('./cart');
 const actions = {
   add: cart.add,
   change: cart.change,
+  delete: cart.del,
 };
 
 const handler = (req, res, action, file) => {
@@ -22,5 +23,6 @@ const handler = (req, res, action, file) => {
     }
   });
 };
+
 
 module.exports = handler;
